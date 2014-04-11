@@ -1,0 +1,3 @@
+To use it, download UDK3 (Version July 2013), and put all the files in the installation folder. Then run the editor and load UDKGame/Content/Maps/Ork/MainMenu.udk
+
+Then, to play it, press the "Start this level on PC" button (a symbol with a TV and a green play symbol on the left), next to the Kismet Debugging button. This way the compilation can load different levels. If you press the Green or Blue play it can't load any new levels, so you can't see the game :P

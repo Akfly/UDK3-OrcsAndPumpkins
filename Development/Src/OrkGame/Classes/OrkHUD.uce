@@ -1,0 +1,64 @@
+class OrkHUD extends HUD;
+
+var OrkMouseInterfaceGfx MouseInterface;
+//var OrkHealthInterfaceGfx HealthInterface;
+
+var vector MouseWorldOrigin;
+var vector MouseWorldDirection;
+
+var vector HitLocation;
+var vector HitNormal;
+
+event PostBeginPlay()
+{
+	super.PostBeginPlay();
+
+	MouseInterface = new class'OrkMouseInterfaceGfx';
+	MouseInterface.TheHUD = self;
+	MouseInterface.Start();
+
+	//HealthInterface = new class'OrkHealthInterfaceGfx';
+	//HealthInterface.Start();
+}
+
+event PostRender()
+{
+	super.PostRender();
+
+	if(Canvas != none)
+	{
+		Canvas.DeProject(MouseInterface.MousePosition, MouseWorldOrigin, MouseWorldDirection);
+	}
+
+}
+
+function OnMouseUp()
+{
+	local actor TActor;
+
+	TActor = Trace(HitLocation, HitNormal, MouseWorldOrigin + MouseWorldDirection * 65536.0f , MouseWorldOrigin, true);
+
+	if(TActor.Tag == 'FloorCollision')
+	{
+		//DrawDebugSphere(HitLocation, 50, 15, 255, 0, 255, true);
+		OrkPlayerController(PlayerOwner).OnMouseUp(HitLocation);
+	}
+}
+
+function PreCalcValues()
+{
+	super.PreCalcValues();
+
+	if(MouseInterface != none)
+	{
+		MouseInterface.SetViewport(0,0,SizeX,SizeY);
+		MouseInterface.SetViewScaleMode(SM_NoScale);
+		MouseInterface.SetAlignment(Align_TopLeft);
+	}
+
+}
+
+DefaultProperties
+{
+
+}

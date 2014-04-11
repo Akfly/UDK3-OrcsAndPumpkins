@@ -1,0 +1,21 @@
+class OrkMouseInterfaceGfx extends GFxMoviePlayer;
+
+var vector2D MousePosition;
+var OrkHUD TheHUD;
+
+function OnMouseMove(int X, int Y)
+{
+	MousePosition.X = X;
+	MousePosition.Y = Y;
+}
+
+function OnMouseUp(int X, int Y)
+{
+	`log("MouseUp: " $ X $ "; " $ Y);
+	TheHUD.OnMouseUp();
+}
+
+DefaultProperties
+{
+	MovieInfo=SwfMovie'OrkMouse.OrkMouse'
+}

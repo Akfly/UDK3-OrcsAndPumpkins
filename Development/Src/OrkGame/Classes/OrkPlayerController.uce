@@ -1,0 +1,56 @@
+class OrkPlayerController extends PlayerController;
+
+var OrkHUD OrkHUD;
+var vector MyTarget;
+var(Ork) float RotationSpeed;
+
+event Possess(Pawn inPawn, bool bVehicleTransition)
+{
+	super.Possess(inPawn, bVehicleTransition);
+	Pawn.SetMovementPhysics();
+}
+function PlayerTick(float DeltaTime)
+{
+	local rotator NewRotation;
+
+	super.PlayerTick(DeltaTime);
+
+	if(VSize2D(Pawn.Location - MyTarget) > 60)
+	{
+		NewRotation = RInterpTo(Pawn.Rotation, rotator(MyTarget - Pawn.Location), DeltaTime, RotationSpeed, false);
+		NewRotation.Pitch=0;
+		NewRotation.Roll=0;
+		Pawn.SetRotation(NewRotation);
+	}
+}
+
+function OnMouseUp(vector vTarget);
+state Idle
+{
+	function OnMouseUp(vector vTarget)
+	{
+		GoToState('Seeking');
+		MyTarget=vTarget;
+	}
+}
+state Seeking
+{
+	function OnMouseUp(vector vTarget)
+	{
+		GoToState('Seeking');
+		MyTarget=vTarget;
+	}
+Begin:
+	
+	
+	MoveTo(MyTarget);
+	GoToState('Idle');
+}
+
+DefaultProperties
+{
+	MyTarget=(X=0,Y=0,Z=0)
+	RotationSpeed=20
+	CameraClass=class'OrkCamera'
+	InputClass=class'OrkPlayerInput'
+}
